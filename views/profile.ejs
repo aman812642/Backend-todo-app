@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Todo Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-white">
+  <div class="w-full min-h-screen flex flex-col items-center px-4 py-6 relative">
+
+    <a class="absolute right-5 top-4 bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm font-medium transition" href="/logout">Logout</a>
+
+
+    <h1 class="text-3xl font-bold mt-6">Hello, <%= user.name %> 👋</h1>
+    <p class="text-zinc-300 mt-2 mb-6 text-center text-sm sm:text-base">You can write your todos down here 👇⬇</p>
+
+
+    <form action="/todo" method="post" class="w-full max-w-xl bg-zinc-800 p-6 rounded-xl shadow-lg flex flex-col gap-4">
+      <input class="bg-zinc-700 px-3 py-2 rounded w-full placeholder:text-zinc-400" type="text" name="todotitle" placeholder="Enter Title" required />
+      <textarea class="bg-zinc-700 px-3 py-2 rounded w-full h-32 resize-none placeholder:italic placeholder:text-zinc-400" maxlength="400" name="todocontent" placeholder="Enter Task" required></textarea>
+      <button class="bg-blue-600 hover:bg-blue-700 transition text-white py-2 rounded font-medium w-full">Create</button>
+    </form>
+
+    <h2 class="text-zinc-400 mt-12 text-2xl font-semibold">Your Todos</h2>
+
+    <div class="todo-container mt-6 w-full flex flex-wrap justify-center gap-6 px-2 sm:px-6">
+      <% if (user.todos && user.todos.length > 0) { %>
+        <% user.todos.map((elem) => { %>
+          <div class="bg-zinc-800 rounded-xl p-4 w-full sm:w-[45%] md:w-[30%] lg:w-[20%] min-h-[22vh] max-h-[30vh] shadow-md hover:shadow-xl transition overflow-auto relative">
+            <h3 class="text-xl font-bold text-center mb-2"><%= elem.todotitle %></h3>
+            <p class="text-sm italic text-amber-400 text-justify"><%= elem.todocontent %></p>
+            <div class="absolute bottom-2 left-4 flex gap-4">
+              <a href="/edit/<%= elem._id %>" class="text-sm text-blue-400 hover:text-blue-300 font-medium transition">Edit</a>
+              <a href="/delete/<%= elem._id %>" onclick="return confirm('Are you sure you want to delete this todo?')" class="text-sm text-red-400 hover:text-red-300 font-medium transition">Delete</a>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p class="text-zinc-400 text-center mt-4">No todos to show.</p>
+      <% } %>
+    </div>
+
+  </div>
+</body>
+</html>
